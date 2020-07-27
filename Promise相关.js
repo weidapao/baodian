@@ -68,3 +68,23 @@ function request(fn){
 
 request(event1)
 request(event2)
+
+// async await错误处理的办法，比try catch要好
+
+function request(event){
+  return new Promise((resolve, reject) =>{
+    reject('错误')
+  })
+}
+
+async function fn(){
+ const result = await request().then(null,error =>{
+   console.log(1)
+   throw new Error(error)
+ })
+ console.log(1111,result)  // 抛出错误后不执行
+ console.log(222222)       // 抛出错误后不执行
+ 
+}
+
+fn()
