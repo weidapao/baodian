@@ -11,8 +11,8 @@ Function.prototype.call1 = function () {
 }
 
 var a = {b:1}
-function c (arg1, arg2,arg3){
-  console.log(this.b+arg1+arg2+arg3)
+function c(arg1, arg2, arg3) {
+  console.log(this.b + arg1 + arg2 + arg3)
 }
 c()
 c.call(a)
