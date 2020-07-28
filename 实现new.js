@@ -3,7 +3,7 @@ function objectFactory(){
   var constructor = [].shift.call(arguments)
   temp.__proto__ = constructor.prototype
   var ret =  constructor.apply(temp, arguments)
-  return typeof ret === 'object' ? ret : obj;
+  return typeof ret === 'object' ? ret : temp;
 }
 
 var a = function(a,b){
