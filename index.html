@@ -2,14 +2,14 @@
 <html>
 <head>
   <meta charset="utf-8">
-  <title>JS Bin</title>
+  <title>index</title>
 </head>
 <body>
-  <ul>
-    <li><a href="#/">turn yellow</a></li>
-    <li><a href="#/blue">turn blue</a></li>
-    <li><a href="#/green">turn green</a></li>
-</ul>
-<script type="text/javascript" src="./路由实现.js"></script>
+  <div id="app">
+    <input type="text" v-model="text">
+    {{ text }}
+    <button @click="reset" style="display:block;">重置</button>
+</div>
+<script type="text/javascript" src="./react/实现mvvm.js"></script>
 </body>
 </html>
