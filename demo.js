@@ -1,8 +1,21 @@
-var p1 = function(){
-  return Promise.reject(1)
+function jiexie(str){
+  var result = []
+  var c = ''
+  for(i=0;i<str.length;i++){
+    if(str[i]!='.'&&str[i]!='['&&str[i]!=']'){
+      c+=str[i]
+    }else{
+      if(c!=''){
+        result.push(c)
+        c = ''
+      }
+    }
   }
-p1().then(a=>{
-  return new Promise(function(resolve, reject){
-    reject(2222)
-  })
-}).then(a=>{console.log(2,a)},a=>{console.log(4,a)})
+  if(c!=''){
+    result.push(c)
+  }
+  return result
+}
+console.log(jiexie('a[0].b'))
+console.log(jiexie('a[1]'))
+console.log(jiexie('x'))
