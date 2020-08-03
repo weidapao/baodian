@@ -1,21 +1,14 @@
-function jiexie(str){
-  var result = []
-  var c = ''
-  for(i=0;i<str.length;i++){
-    if(str[i]!='.'&&str[i]!='['&&str[i]!=']'){
-      c+=str[i]
-    }else{
-      if(c!=''){
-        result.push(c)
-        c = ''
-      }
+function Person(name,age){
+    return function(key){
+        if(key==='name'){
+            return name
+        }
+        if(key==='age'){
+            return age
+        }
     }
-  }
-  if(c!=''){
-    result.push(c)
-  }
-  return result
 }
-console.log(jiexie('a[0].b'))
-console.log(jiexie('a[1]'))
-console.log(jiexie('x'))
+
+var c = Person('jack',23)
+console.log(c('name'))
+console.log(c('age'))
