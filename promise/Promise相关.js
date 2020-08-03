@@ -10,6 +10,33 @@ var s3 = () => {
   return Promise.reject(3)
 }
 
+// 实现Promise.all
+Promise.all2 = promises=>{
+  return new Promise(function(resolve, reject){
+    if (!Array.isArray(promises)) {
+      return reject(new TypeError('arguments must be an array'));
+    }
+    var results = new Array(promises.length);
+    for(var i=0; i<promises.length; i++){
+      !function(i){
+        Promise.resolve(promises[i]).then(data=>{
+          results[i] = data;
+          if(i+1===promises.length){
+            return resolve(results)
+          }
+        },err=>reject(err))
+      }(i)
+    }
+  })
+}
+
+// 实现Promise.race
+Promise.race2 = promises =>new Promise((resolve, reject)=>{
+  promises.forEach(promise=>{
+    promise.then(resolve, reject)
+  })
+})
+
 // 实现Promise.allsettled
 Promise.allsettled2 = (promiseList) => {
   return Promise.all(

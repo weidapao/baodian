@@ -19,20 +19,3 @@ function flattenDeep(arr,deep=1) {
 function flatten3(arr) {
   return !Array.isArray(arr) ? arr : [].concat.apply([], arr.map(flatten3));
 }
-
-function myFlat(arr){
-  var newArr = []
-  for(i=0; i<arr.length; i++){
-    if(Array.isArray(arr[i])){
-      newArr = newArr.concat(...arr[i])
-    }else{
-      newArr.push(arr[i]);
-    }
-  }
-  // console.log(newArr)
-  return newArr;
-}
-
-// console.log(flatten(arr1))
-// console.log(flattenDeep(arr1,1))
-console.log(myFlat(arr1))
