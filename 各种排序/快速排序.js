@@ -1,0 +1,46 @@
+/* 快速排序
+* QuickSort
+* 找一个中枢点，小于它的移到左边，大于它的移到右边，不停递归
+* 两端两个指针，往中间移动，发现不满足的元素，就交换这两个元素的位置
+*/
+
+function swap(items, leftIndex, rightIndex) {
+  var temp = items[rightIndex]
+  items[rightIndex] = items[leftIndex]
+  items[leftIndex] = temp
+}
+
+function partition(items, left, right) {
+  var pivot = items[Math.floor(left + right / 2)]
+  var i = left
+  var j= right
+  while (i <= j) {
+    while (items[i] < pivot) {
+      i++
+    }
+    while (items[j] > pivot) {
+      j--
+    }
+    if (i <= j) {
+      swap(items, i, j)
+      i++
+      j--
+    }
+  }
+  return i
+}
+
+function quickSort(items,left,right) {
+  if(items.length>1){
+    var index = partition(items,left,right)
+    if(left<index-1){
+      quickSort(items,left,index-1)
+    }
+    if(right>index){
+      quickSort(items,index,right)
+    }
+  }
+  return items
+}
+
+console.log(quickSort([23,334,54,3445,5645,24,5634,5656,23,65,43,554]))

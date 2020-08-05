@@ -1,10 +1,12 @@
 var obj = {
   text: 'test',
-  foo:'bar',
+  foo: 'bar',
 }
 
 var methods = {
-  reset: () => (obj.text = ''),
+  reset: () => {
+    obj.text = ''
+  },
 }
 
 class EventHub {
@@ -13,11 +15,10 @@ class EventHub {
     this.cache.push(fn)
   }
   emit(data) {
-    this.cache.map((fn) => fn&&fn(data))
+    this.cache.map((fn) => fn && fn(data))
   }
 }
 EventHub.target = null
-
 
 function observer(data) {
   for (const key in data) {
@@ -71,7 +72,7 @@ function compile(dom) {
       const match = node.nodeValue.match(reg)
       if (match) {
         const fn = function (value) {
-          console.log('xxxx',name)
+          console.log('xxxx', name)
           node.nodeValue = value
         }
         EventHub.target = fn
