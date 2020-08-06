@@ -8,9 +8,26 @@
  * 负数处理
  */
 function countSort(arr){
-  var max = Math.max.apply(null,arr)
-  var buckets = []
-  for(var i = 0; i < arr.length; i++){
-
+  var max = arr[0]
+  var min = arr[0]
+  var result = []
+  for(var i = 0; i < n; i++){
+    if(arr[i] > max){
+        max = arr[i] 
+    }
+    if(arr[i] < min){
+        max = arr[i]
+    }
   }
+  var countArr = new Array(max-min+1).fill(0)
+  for(var i = 0; i <arr.length; i++){
+    countArr[arr[i]-min]++
+  }
+  for(var i = 0; i <countArr.length;i++){
+    while(countArr[i]>0){
+      result.push(i+min)
+      countArr[i]--
+    }
+  }
+  return result
 }
