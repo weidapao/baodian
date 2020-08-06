@@ -19,3 +19,10 @@ token在客户端一般存放于localStorage，cookie，或sessionStorage中。�
 原理：攻击者在web页面中会插入一些恶意的script代码,用户浏览器渲染html文档的过程中，脚本执行，达到恶意攻击用户的目的。
 防御：首先前端要对用户输入的信息进行过滤，可以用正则，通过替换标签的方式进行转码或解码，少用.innerHTML、.outerHTML、document.write()
 HTTP-only Cookie：浏览器将禁止页面的 Javascript 访问带有 HttpOnly 属性的 Cookie
+
+## CSRF攻击(cross site request forgery,跨站请求伪造)
+原理: 攻击者盗用用户的身份信息，并以用户的名义进行发送恶意的请求
+例子: 一个恶意攻击者可以在另一个网站上放置如下代码`<img src="https://bank.example.com/withdraw?account=Alice&amount=1000&for=Badman" />`,用户访问就会发起这个请求。可以将这种地址藏在论坛，博客等任何用户生成内容的网站中。
+防御: 
+1. 用token
+2. 检查Referer字段:这个字段用以标明请求来源于哪个地址,如果是CSRF攻击传来的请求，Referer字段会是包含恶意网址的地址，不会位于bank.example.com之下，这时候服务器就能识别出恶意的访问。
