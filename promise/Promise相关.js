@@ -37,6 +37,13 @@ Promise.race2 = promises =>new Promise((resolve, reject)=>{
   })
 })
 
+// 实现fetch超时
+Promise.race([new Promise(function(resolve, reject){
+  setTimeout(function(){
+    reject('超时了')
+  },3000)
+}),fetch('http://www.baidu.com')]).then(value =>console.log(value))
+
 // 实现Promise.allsettled
 Promise.allsettled2 = (promiseList) => {
   return Promise.all(
