@@ -1,11 +1,12 @@
-function debounce(callback,wait){
-  let timer = null;
-  return ()=>{
-    console.log(this)
-    if(timer){
-      clearTimeout(timer)  
-    }
-    timer = setTimeout(callback,wait)
+function debounce(fn, delay){
+  let timerId = null
+  return function(){
+      const context = this
+      if(timerId){window.clearTimeout(timerId)}
+      timerId = setTimeout(()=>{
+          fn.apply(context, arguments)
+          timerId = null
+      },delay)
   }
 }
 

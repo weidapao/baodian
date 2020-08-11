@@ -1,3 +1,3 @@
 TODO: webpack
-TODO: https
-TODO: 浏览器渲染过程
+TODO: 虚拟dom
+TODO: requestAnimationFrame requestIdleCallback
