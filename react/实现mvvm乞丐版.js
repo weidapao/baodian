@@ -10,7 +10,7 @@ var methods = {
 }
 
 class EventHub {
-  cache = []
+  cache = [] // 存所有的事件
   on(fn) {
     this.cache.push(fn)
   }
