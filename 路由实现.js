@@ -1,6 +1,9 @@
 /**
+ * 本质就是监听 URL 的变化，然后匹配路由规则，显示相应的页面，并且无须刷新
  * hash路由 History路由
  * hash路由一个明显的标志是带有#,我们主要是通过监听url中的hash变化来进行路由跳转
+ * 通过hashchange事件来监听
+ * 手动刷新通过load事件来监听
  */
 
 // 1.将路由的hash以及对应的callback函数储存
@@ -58,9 +61,9 @@ localRoute.route('/green',()=>{
 })
 
 // History路由
-// window.history.back();       // 后退
-// window.history.forward();    // 前进
-// window.history.go(-3);       // 后退三个页面
+// 刷新页面或者输入url，需要后端配合重定向
+// 后退history.back(),前进history.forward()，触发popstate事件
+// 点击浏览器跳转，调用pushstate向浏览器历史添加一个状态
 // history.pushState用于在浏览历史中添加历史记录,但是并不触发跳转,此方法接受三个参数，依次为state，title，url
 class Routers {
   constructor() {
