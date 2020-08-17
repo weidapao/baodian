@@ -35,7 +35,8 @@
 ## getDerivedStateFromProps(props, state)
 会在调用 render 方法之前调用，并且在初始挂载及后续更新时都会被调用。它应返回一个对象来更新 state，如果返回 null 则不更新任何内容
 - 每次渲染前都会触发
-- 可以用好memoization代替（写在render里面）
+- 可以用memoization代替（写在render里面）
+- 一般把传入的 prop 值和之前传入的 prop 进行比较，静态函数，不能用this访问class的属性
 
 ## render
 class组件中唯一必须实现的方法，必须是纯函数

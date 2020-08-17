@@ -131,3 +131,10 @@ Pragma > Cache-Control > Expires > ETag > Last-Modified
 再次用机构的公钥，解密出服务端的公钥Key1
 5. 浏览器生成自己的对称加密公钥key2，用服务端公钥Key1加密Key2，发给服务端
 6. 服务端用自己的私钥解密，得到key2，然后用key2进行对称加密
+
+### get和post的区别
+- 浏览器后退刷新的时候，get无害，post数据会被重新提交
+- GET请求会被浏览器主动cache，而POST不会，除非手动设置
+- GET 方法向 URL 添加数据；URL 的长度是受限制的，POST数据长度无限制
+- get请求可收藏为书签，post不可以
+- GET 用于获取信息，是无副作用的，是幂等的，POST 用于修改服务器上的数据，有副作用，非幂等
