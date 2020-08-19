@@ -94,30 +94,33 @@ HTTP/1.1 中，所有的连接默认都是持久连接
 ### 强制缓存
 在缓存数据未失效的情况下，不需要再和服务器发生交互
 Expires和Cache-Control
-#### Expires服务器告诉浏览器缓存的过期时间(浏览器和服务器时间不同步的问题)
+#### Expires服务器告诉浏览器缓存的过期时间，绝对时间(浏览器和服务器时间不同步的问题)
 
 #### Cache-Control
 通用首部字段Cache-Control,请求报文和响应报文双方都会使用的首部
 cache-Control: private, max-age=0, no-cache 参数用逗号分隔
-- private 缓存服务器只能给特定用户提供缓存服务
-- no-cache 目的:防止从缓存中返回过期的资源
-- max-age 客户端发送的指令里带max-age,如果判定资源缓存时间比指定时间小，客户端就接收缓存资源
+- private 所有的内容只有客户端才可以缓存，代理服务器不能缓存。默认值。
+- no-cache 虽然字面意思是“不要缓存”，但实际上还是要求客户端缓存内容的，只是是否使用这个内容由后续的对比来决定
+- max-age 最大有效时间，客户端发送的指令里带max-age,如果判定资源缓存时间比指定时间小，客户端就接收缓存资源
+- no-store: 真正意义上的“不要缓存”。所有内容都不走缓存
 max-age=0，缓存服务器通常要把请求转发给源服务器
 
 缺点: 时间到了但是文件没有改变，还是会去请求一次服务器
 
 ### 协商缓存
 需要进行比较判断是否可以使用缓存。强制缓存优先级高于协商缓存。
-ETag
+流程上说，浏览器先请求缓存数据库，返回一个缓存标识。之后浏览器拿这个标识和服务器通讯。如果缓存未失效，则返回 HTTP 状态码 304 表示继续使用，于是客户端继续使用缓存；如果失效，则返回新的数据和缓存规则，浏览器响应数据后，再把规则写入到缓存数据库
+- Etag & If-None-Match
 返回文件的唯一标识ETag，只有当文件内容改变时，ETag才改变。
 浏览器的缓存文件过期时，浏览器带上请求头(If-None-Match)相当于上一次发来的Etag
 服务器比较If-None-Match和文件的ETag，一致就返回304，使用本地缓存。
 不一致就返回文件内容和ETag
-Last-Modified
-浏览器请求，服务器返回并带上文件上次修改时间 Last-Modified
-浏览器缓存文件过期，浏览器带上请求头If-Modified-Since请求服务器
-服务器比较If-Modified-Since和文件上次修改时间。一致就返回304，使用本地缓存。
+- Last-Modified & If-Modified-Since
+1. 浏览器请求，服务器返回并带上文件上次修改时间 Last-Modified
+2. 下一次请求相同资源时时，浏览器从自己的缓存中找出“不确定是否过期的”缓存。因此在请求头中将上次的 Last-Modified 的值写入到请求头的 If-Modified-Since 字段
+3. 服务器比较If-Modified-Since和文件上次修改时间。一致就返回304，使用本地缓存。
 不一致返回文件内容和Last-Modified
+缺陷：文件可能是服务器动态生成的
 
 ### 缓存的优先级
 Pragma > Cache-Control > Expires > ETag > Last-Modified
@@ -138,3 +141,31 @@ Pragma > Cache-Control > Expires > ETag > Last-Modified
 - GET 方法向 URL 添加数据；URL 的长度是受限制的，POST数据长度无限制
 - get请求可收藏为书签，post不可以
 - GET 用于获取信息，是无副作用的，是幂等的，POST 用于修改服务器上的数据，有副作用，非幂等
+
+## 缓存位置分类
+从上到下查找，找到就返回，没有继续
+1. Service Worker
+2. Memory Cache
+3. Disk Cache
+4. 网络请求
+
+### Memory Cache
+浏览器的 TAB 关闭后该次浏览的 memory cache 便告失效
+几乎所有的请求资源 都能进入 memory cache
+在从 memory cache 获取缓存内容时，浏览器会忽视例如 max-age=0, no-cache 等头部配置
+不想缓存，用no-store
+memory cache 是浏览器为了加快读取缓存速度而进行的自身的优化行为，不受开发者控制，也不受 HTTP 协议头的约束
+### disk cache
+存储在硬盘上的缓存。
+平时所说的强制缓存，协商缓存，以及 Cache-Control
+
+## 缓存总结
+1. 调用 Service Worker 的 fetch 事件响应
+2. 查看 memory cache
+3. 查看 disk cache。这里又细分：
+   - 如果有强制缓存且未失效，则使用强制缓存，不请求服务器。这时的状态码全部是 200
+   - 如果有强制缓存但已失效，使用对比缓存，比较后确定 304 还是 200
+4. 发送网络请求，等待网络响应
+5. 把响应内容存入 disk cache (如果 HTTP 头信息配置可以存的话)
+6. 把响应内容 的引用 存入 memory cache (无视 HTTP 头信息的配置)
+7. 把响应内容存入 Service Worker 的 Cache Storage (如果 Service Worker 的脚本调用了 cache.put())
