@@ -105,8 +105,8 @@ request(event2)
 
 // async await错误处理的办法，比try catch要好
 
-function request(event){
-  return new Promise((resolve, reject) =>{
+function request(event) {
+  return new Promise((resolve, reject) => {
     reject('错误')
   })
 }

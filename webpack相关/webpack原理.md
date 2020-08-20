@@ -21,3 +21,44 @@
 - 初始化：启动构建，读取与合并配置参数，加载 Plugin，实例化 Compiler
 - 编译：从 Entry 出发，针对每个 Module 串行调用对应的 Loader 去翻译文件的内容，再找到该 Module 依赖的 Module，递归地进行编译处理
 - 输出：将编译后的 Module 组合成 Chunk，将 Chunk 转换成文件，输出到文件系统中
+
+## 输出文件分析
+### 单个bundle.js
+```
+(function(modules) {
+
+  // 模拟 require 语句
+  function __webpack_require__() {
+  }
+
+  // 执行存放所有模块数组中的第0个模块
+  __webpack_require__(0);
+
+})([/*存放所有模块的数组*/])
+```
+一个立即执行函数，原来一个个独立的模块文件被合并到了一个单独的 bundle.js，把所有模块都存放在了数组中，执行一次网络加载
+### 分割代码时的输出
+- 多了一个 __webpack_require__.e 用于加载被分割出去的，需要异步加载的 Chunk 对应的文件
+- 多了一个 webpackJsonp 函数用于从异步加载的文件中安装模块
+
+## Loader
+能把源文件经过转化后输出新的结果，并且一个文件还可以链式的经过多个翻译员翻译
+以scss为例
+1. SCSS 源代码会先交给 sass-loader 把 SCSS 转换成 CSS；
+2. 把 sass-loader 输出的 CSS 交给 css-loader 处理，找出 CSS 中依赖的资源、压缩 CSS 等；
+3. 把 css-loader 输出的 CSS 交给 style-loader 处理，转换成通过脚本加载的 JavaScript 代码
+链式执行，先 sass-loader 再 css-loader 再 style-loader
+
+常用的Loader：file-loader、url-loader、ts-loader、babel-loader、eslint-loader
+
+## Plugin
+在 Webpack 运行的生命周期中会广播出许多事件，Plugin 可以监听这些事件，在合适的时机通过 Webpack 提供的 API 改变输出结果
+常用Plugin：mini-css-extract-plugin(分离样式文件),clean-webpack-plugin,webpack-bundle-analyzer(打包结果分析)，html-webpack-plugin(html创建)，uglifyjs-webpack-plugin压缩js
+
+## 优化webpack
+- 多进程/多实例构建 thread-loader
+- 压缩代码 uglifyjs-webpack-plugin
+- 图片压缩image-webpack-loader
+- 提取页面公共资源SplitChunksPlugin
+- DLL DllPlugin，让一些基本不会改动的代码先打包成静态资源，避免反复编译浪费时间
+- 开启缓存babel-loader 开启缓存
