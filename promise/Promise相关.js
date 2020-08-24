@@ -11,21 +11,24 @@ var s3 = () => {
 }
 
 // 实现Promise.all
-Promise.all2 = promises=>{
-  return new Promise(function(resolve, reject){
+Promise.all2 = (promises) => {
+  return new Promise(function (resolve, reject) {
     if (!Array.isArray(promises)) {
-      return reject(new TypeError('arguments must be an array'));
+      return reject(new TypeError('arguments must be an array'))
     }
-    var results = new Array(promises.length);
-    for(var i=0; i<promises.length; i++){
-      !function(i){
-        Promise.resolve(promises[i]).then(data=>{
-          results[i] = data;
-          if(i+1===promises.length){
-            return resolve(results)
-          }
-        },err=>reject(err))
-      }(i)
+    var results = new Array(promises.length)
+    for (var i = 0; i < promises.length; i++) {
+      !(function (i) {
+        Promise.resolve(promises[i]).then(
+          (data) => {
+            results[i] = data
+            if (i + 1 === promises.length) {
+              return resolve(results)
+            }
+          },
+          (err) => reject(err)
+        )
+      })(i)
     }
   })
 }
@@ -90,11 +93,11 @@ var event2 = ()=>{
 
 var globalMark = 0
 
-function request(fn){
+function request(fn) {
   globalMark++
   var localMark = globalMark
-  fn().then(val=>{
-    if(globalMark===localMark){
+  fn().then((val) => {
+    if (globalMark === localMark) {
       console.log(val)
     }
   })

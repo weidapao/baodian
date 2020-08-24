@@ -7,31 +7,28 @@
 
 // 简单实现useState，useEffect
 // 用数组，来解决 Hooks 的复用问题
-let stateList = []
-let cursor = 0
-function useState(initalState) {
-  const cur = cursor
-  stateList[cursor] = stateList[cursor] || initalState;
-  function setter(val) {
-    stateList[cur] = val;
+let memoizedState = []; // hooks 存放在这个数组
+let cursor = 0; // 当前 memoizedState 下标
+
+function useState(initialValue) {
+  memoizedState[cursor] = memoizedState[cursor] || initialValue;
+  const currentCursor = cursor;
+  function setState(newState) {
+    memoizedState[currentCursor] = newState;
     render();
   }
-  return [stateList[cursor++], setter];
+  return [memoizedState[cursor++], setState]; // 返回当前 state，并把 cursor 加 1
 }
+
 function useEffect(callback, depArray) {
-  const hasNoDeps = !depArray; // 如果 dependencies 不存在
-  let flag = false;
-  if (stateList[cursor]) {
-    depArray.map((item, i) => {
-      if (item !== stateList[i]) {
-        flag = true
-      }
-    })
-  }
-  const hasChangedDeps = stateList[cursor]?flag:true  // 第一次执行stateList[cursor]还没有值，所以是true
-  if(hasNoDeps || hasChangedDeps){
-    callback()
-    stateList[cursor] = depArray
+  const hasNoDeps = !depArray;
+  const deps = memoizedState[cursor];
+  const hasChangedDeps = deps
+    ? !depArray.every((el, i) => el === deps[i])
+    : true;
+  if (hasNoDeps || hasChangedDeps) {
+    callback();
+    memoizedState[cursor] = depArray;
   }
   cursor++;
 }
