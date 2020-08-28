@@ -82,3 +82,8 @@ export const connect = (mapStateToProps,mapDispatchToProps) => (WrappedComponent
 
   return Connect
 }
+
+// Provider将数据放入context，
+// connect的时候会从context中取出store，获取mapStateToProps，mapDispatchToProps，
+// 使用selectorFactory生成Selector作为props注入组件。
+// 其次订阅store的变化，每次更新组件会取到最新的props

@@ -1,17 +1,17 @@
 class EventHub {
-  private cache :{[key:string]:Array<(data:unknown)=>void>}= {}
-  on(eventname:string,fn:(data:unknown)=>void){
-    this.cache[eventname] = this.cache[eventname]||[]
+  private cache: { [key: string]: Array<(data: unknown) => void> } = {}
+  on(eventname: string, fn: (data: unknown) => void) {
+    this.cache[eventname] = this.cache[eventname] || []
     this.cache[eventname].push(fn)
   }
-  emit(eventname,data?:unknown){
+  emit(eventname, data?: unknown) {
     const fnList = this.cache[eventname] || []
-    fnList.map(fn=>fn(data))
+    fnList.map((fn) => fn(data))
   }
-  off(eventname,fn){
-    const fnList = this.cache[eventname]||[]
-    if(fnList.indexOf(fn)>-1){
-      fnList.splice(fnList.indexOf(fn),1)
+  off(eventname, fn) {
+    const fnList = this.cache[eventname] || []
+    if (fnList.indexOf(fn) > -1) {
+      fnList.splice(fnList.indexOf(fn), 1)
     }
   }
 }
