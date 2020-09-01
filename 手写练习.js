@@ -28,9 +28,11 @@ Promise.race2 = (promises) => {
       Promise.resolve(promises[i]).then(
         (value) => {
           !isend && resolve(value)
+          isend = true
         },
         (err) => {
           !isend && reject(value)
+          isend = true
         }
       )
     }
@@ -179,3 +181,16 @@ function pointNodeInfo(node){
 }
 
 traversDom(obox)
+
+// settimeout模拟
+function mysetInterval(fn,ms) {
+  const rec = {}
+  function exec(){
+    return settimeout(()=>{
+      fn.apply(null)
+      rec.current = exec()
+    },ms)
+  }
+  rec.current = exec()
+  return rec
+}

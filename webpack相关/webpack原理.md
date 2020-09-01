@@ -62,3 +62,12 @@
 - 提取页面公共资源SplitChunksPlugin
 - DLL DllPlugin，让一些基本不会改动的代码先打包成静态资源，避免反复编译浪费时间
 - 开启缓存babel-loader 开启缓存
+
+## 按需加载
+
+## 模块热更新
+1. webpack监听到文件的变化，重新打包之后，保存在内存中
+2. dev server在浏览器端和服务端之间建立一个 websocket 长连接，devServer 通知浏览器端文件发生改变，
+把新模块 hash 值发送到浏览器端
+3. 用 webpack/hot/emitter 将最新 hash 值发送给 webpack，然后将控制权交给 webpack 客户端代码
+4. webpack 接收到最新 hash 值验证并请求模块代码
