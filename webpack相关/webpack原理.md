@@ -64,10 +64,28 @@
 - 开启缓存babel-loader 开启缓存
 
 ## 按需加载
+场景：点击、路由切换的时候
+路由按需加载
+```
+// 集成react-loadable
+const B = Loadable({
+  loader: () => import('./b.js'),
+  loading: Loading,
+})
+<Route path="/B" component={B}/>
+```
 
 ## 模块热更新
 1. webpack监听到文件的变化，重新打包之后，保存在内存中
 2. dev server在浏览器端和服务端之间建立一个 websocket 长连接，devServer 通知浏览器端文件发生改变，
 把新模块 hash 值发送到浏览器端
 3. 用 webpack/hot/emitter 将最新 hash 值发送给 webpack，然后将控制权交给 webpack 客户端代码
-4. webpack 接收到最新 hash 值验证并请求模块代码
+4. webpack 接收到最新 hash 值验证并请求模块代码、
+
+## Tree Shaking
+移除 JavaScript 上下文中的未引用代码(dead-code),依赖es module。
+例子：需要将文件标记为 side-effect-free，比如一个polyfill，影响影响全局作用域，并且通常不提供 export，就不能删除。
+没有副作用的代码才能删除
+- 使用 ES2015 模块语法（即 import 和 export）
+- 确保 babel没有把ES2015 模块语法转换为 CommonJS 
+- 在项目的 package.json 文件中，添加 "sideEffects" 属性。

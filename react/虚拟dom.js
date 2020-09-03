@@ -4,7 +4,20 @@
  * 2.当状态变更的时候，重新构造一棵新的对象树。然后用新的树和旧的树进行比较，记录两棵树差异（比较两棵虚拟DOM树的差异）
  * 3.把2所记录的差异应用到步骤1所构建的真正的DOM树上，视图就更新了（把差异应用到真正的DOM树上）
  * 
- * 直接操作dom要重新创建所有DOM元素，虚拟dom通过diff算法比较，进行必要的dom更新
+ * 比较的细节
+ * 1.把所有的更新缓存起来
+ * 2.各种更新类型
+ *  - 新的DOM节点不存在{type: 'REMOVE', index}
+ *  - 文本的变化{type: 'TEXT', text: 1}
+ *  - 当节点类型相同时，去看一下属性是否相同，产生一个属性的补丁包{type: 'ATTR', attr: {class: 'list-group'}}
+ *  - 通过key判断移动节点,{type：Move, from: i, to :j }
+ * 
+ * 3.直接操作dom要重新创建所有DOM元素，虚拟dom通过diff算法比较，进行必要的dom更新
+ *  path是遍历虚拟dom，存下来的，遍历真实的dom，判断有没有更新，有的话，就更新dom
+ *  node.textContent更新text
+ *  node.setAttribute更新属性
+ *  node.parentNode.replaceChild(newNode, node);替换节点
+ *  node.parentNode.removeChild 删除节点
  */
 // 用js对象模拟dom树
 export default class Element {
