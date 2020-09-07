@@ -89,3 +89,18 @@ const B = Loadable({
 - 使用 ES2015 模块语法（即 import 和 export）
 - 确保 babel没有把ES2015 模块语法转换为 CommonJS 
 - 在项目的 package.json 文件中，添加 "sideEffects" 属性。
+
+## chunk和bundle的关系
+Chunk是Webpack打包过程中，一堆module的集合
+Bundle就是我们最终输出的打包文件
+
+### chunk产生的三种途径
+1. entry产生Chunk
+entry为字符串或者数组的时候产生一个，为对象时产生多个
+
+2. 异步加载模块会产生chunk，()=>import()
+
+3. 代码分割产生Chunk,SplitChunksPlugin
+
+一个chunk可能对应多个bundle文件
+- 配置了devtool: 'source-map',一个chunk会对应两个bundle，一个.js，一个.js.map
