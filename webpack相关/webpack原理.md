@@ -104,3 +104,9 @@ entry为字符串或者数组的时候产生一个，为对象时产生多个
 
 一个chunk可能对应多个bundle文件
 - 配置了devtool: 'source-map',一个chunk会对应两个bundle，一个.js，一个.js.map
+
+## 各种hash
+- hash 项目级，所有文件公用同一个hash，只要有一个文件改变了，hash就变了
+- chunkhash 根据不同的入口文件构建对应的chunk，生成对应的hash值
+- contentHash js中导入css文件，因为是同一个入口文件，js文件变了，分离出来的css文件的chunkhash也会改变，
+用contenthash，css文件所处的模块里的其他文件改变，只要css文件内容不变，contenthash值就不变。

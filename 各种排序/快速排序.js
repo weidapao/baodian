@@ -2,6 +2,9 @@
 * QuickSort
 * 找一个中枢点，小于它的移到左边，大于它的移到右边，不停递归
 * 两端两个指针，往中间移动，发现不满足的元素，就交换这两个元素的位置
+（1）在数据集之中，选择一个元素作为"基准"（pivot）。
+（2）所有小于"基准"的元素，都移到"基准"的左边；所有大于"基准"的元素，都移到"基准"的右边。
+（3）对"基准"左边和右边的两个子集，不断重复第一步和第二步，直到所有子集只剩下一个元素为
 */
 
 function swap(items, leftIndex, rightIndex) {
@@ -10,8 +13,9 @@ function swap(items, leftIndex, rightIndex) {
   items[leftIndex] = temp
 }
 
+// 1,3,5,8,6,7,8,3,2,1
 function partition(items, left, right) {
-  var pivot = items[Math.floor(left + right / 2)]
+  var pivot = items[Math.floor((left + right) / 2)]
   var i = left
   var j= right
   while (i <= j) {
@@ -33,6 +37,7 @@ function partition(items, left, right) {
 function quickSort(items,left,right) {
   if(items.length>1){
     var index = partition(items,left,right)
+    console.log(index)
     if(left<index-1){
       quickSort(items,left,index-1)
     }
@@ -43,4 +48,4 @@ function quickSort(items,left,right) {
   return items
 }
 
-console.log(quickSort([23,334,54,3445,5645,24,5634,5656,23,65,43,554]))
+console.log(quickSort([1,3,5,8,6,7,8,3,2,1]))
