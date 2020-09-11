@@ -3,6 +3,7 @@
  * 前序遍历：根结点 ---> 左子树 ---> 右子树
  * 中序遍历：左子树---> 根结点 ---> 右子树
  * 后序遍历：左子树 ---> 右子树 ---> 根结点
+ * 层次遍历：广度优先
  */
 
 const tree = {
@@ -13,23 +14,25 @@ const tree = {
 function traversalTreeQian(tree, fn) {
   if (tree) {
     fn(tree.value)
-    traversalTree(tree.left)
-    traversalTree(tree.right)
+    traversalTreeQian(tree.left,fn)
+    traversalTreeQian(tree.right,fn)
   }
 }
 
+traversalTreeQian(tree,function(value){console.log(value)})
+
 function traversalTreeMiddle(tree, fn) {
   if (tree) {
-    traversalTree(tree.left)
+    traversalTreeMiddle(tree.left)
     fn(tree.value)
-    traversalTree(tree.right)
+    traversalTreeMiddle(tree.right)
   }
 }
 
 function traversalTreeHou(tree, fn) {
   if (tree) {
-    traversalTree(tree.left)
-    traversalTree(tree.right)
+    traversalTreeHou(tree.left)
+    traversalTreeHou(tree.right)
     fn(tree.value)
   }
 }
@@ -54,20 +57,19 @@ function traversalTreeMiddle(tree, fn) {
 }
 
 // 不使用递归中根序
-const traverseRoodMiddle = (bTree, fn) =>{
+const traverseRoodMiddle = (bTree, fn) => {
   const stack = []
   let current = bTree
-  while(stack.length>0 || current){
-    if(current){
+  while (stack.length > 0 || current) {
+    if (current) {
       stack.push(current)
       current = current.left
-    }else{
+    } else {
       current = stack.pop()
       fn(current.value)
       current = current.right
     }
   }
-  
 }
 
 // 不使用递归前根序
@@ -85,4 +87,12 @@ const traverseRoodQian = (bTree, fn) =>{
     }
   }
   
+}
+
+function traversalQian(tree, fn){
+  if(tree){
+    fn(tree.value)
+    traversalQian(tree.left,fn)
+    traversalQian(tree.right,fn)
+  }
 }
