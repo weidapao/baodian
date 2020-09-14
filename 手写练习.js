@@ -89,6 +89,40 @@ function throttle(callback, wait) {
 }
 
 // 快排
+function quick(arr,start,end) {
+  var middleVal = arr[Math.floor((start + end) / 2)]
+  var i = start
+  var j = end
+  while(i<=j){
+    while(arr[i]<middleVal){
+      i++
+    }
+    while(arr[j]>middleVal){
+      j--
+    }
+    if(i<=j){
+      var temp = arr[i]
+      arr[i] = arr[j]
+      arr[j] = temp
+      i++
+      j--
+    }
+  }
+  return i
+}
+function quickSort(arr,left,right){
+  if(arr.length>1){
+    var index = quick(arr,left,right)
+    if(index-1>left){
+      quickSort(arr,left,index-1)
+    }
+    if(index<right){
+      quickSort(arr,index,right)
+    }
+  }
+  return arr
+}
+quickSort([23,334,54,3445,5645,24,5634,5656,23,65,43,554],0,12)
 
 // 数组扁平化
 function flatten(arr) {

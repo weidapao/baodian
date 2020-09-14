@@ -34,28 +34,30 @@ function merge(left, right) {
 
 mergeSort([23,334,54,3445,5645,24,5634,5656,23,65,43,554])
 
-function merge2(left,right){
-  let leftIndex = 0;
-  let rightIndex = 0;
-  let result = []
-  while(leftIndex<left.length&&rightIndex<right.length){
-    if(left[leftIndex]<=right[rightIndex]){
-      result.push(left[leftIndex])
-      leftIndex++
+function merge2(left, right) {
+  let i = 0;
+  let j = 0;
+  var result = []
+  while(i<left.length&&j<right.length){
+    if(left[i]<=right[j]){
+      result.push(left[i])
+      i++
     }else{
-      result.push(right[rightIndex])
-      rightIndex++
+      result.push(right[j])
+      j++
     }
   }
-  return result.concat(left.slice(leftIndex),right.slice(rightIndex))
+  return result.concat(left.slice(i),right.slice(j))
 }
 
-function mergeSort2(unsortArray){
-  if(unsortArray.length<2){
-    return unsortArray
+function mergeSort(arr){
+  if(arr.length<2){
+    return arr
   }
-  var mid = Math.floor(unsortArray.length / 2)
-  var left = unsortArray.slice(0,mid)
-  var right = unsortArray.slice(mid,unsortArray.length)
-  return merge2(mergeSort2(left),mergeSort2(right))
+  var middleLength = Math.floor(arr.length/2)
+  var left = arr.slice(0,middleLength)
+  var right = arr.slice(middleLength,arr.length)
+  return merge2(mergeSort(left),mergeSort(right))
 }
+
+mergeSort([23,334,54,3445,5645,24,5634,5656,23,65,43,554])

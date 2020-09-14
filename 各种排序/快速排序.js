@@ -37,7 +37,6 @@ function partition(items, left, right) {
 function quickSort(items,left,right) {
   if(items.length>1){
     var index = partition(items,left,right)
-    console.log(index)
     if(left<index-1){
       quickSort(items,left,index-1)
     }
@@ -48,4 +47,4 @@ function quickSort(items,left,right) {
   return items
 }
 
-console.log(quickSort([1,3,5,8,6,7,8,3,2,1]))
+console.log(quickSort([23,334,54,3445,5645,24,5634,5656,23,65,43,554],0,11))

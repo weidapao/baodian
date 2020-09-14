@@ -48,14 +48,14 @@ function flattenDeep2(arr) {
 
 console.log(flattenDeep2([1, 2, 3, [4, 2, [7, 8], 5]], 1))
 
-function bind() {
+Function.prototype.bind2 = function() {
   var fn = this
-  var thisArgs = arguments[0]
-  var args = [].slice.call(arguments, 1)
-  var resultFn = function () {
-    fn.apply(this instanceof resultFn ? this : thisArgs, args.concat(Array.prototype.slice.call(arguments)))
+  var context = arguments[0]
+  var args = [].slice.call(arguments,1)
+  var resultFn = function(){
+    return fn.apply( this instanceof resultFn?this:context, args.concat([].slice.call(arguments)))
   }
-  resultFn.prototype = this.prototype
+  resultFn.prototype = fn.prototype
   return resultFn
 }
 
@@ -161,4 +161,118 @@ function currify(fn,params=[]){
       return currify(fn,[...args,...params])
     }
   }
+}
+
+function test(a,b,c){
+  console.log(a,b,c)
+}
+currify(fn,1,2)
+
+function currify(fn, params = []) {
+  return function (...args) {
+    if (fn.length === params.length + args.length) {
+      return fn(...params, ...args)
+    }
+    return currify(fn, [...params, ...args])
+  }
+}
+
+function maopao(arr){
+for(i=arr.length; i>0; i--){
+  for(j=0; j < i-1;j++){
+    if(arr[j]>arr[j+1]){
+      var temp = arr[j]
+      arr[j] = arr[j+1]
+      arr[j+1] = temp
+    }
+  }
+}
+return arr
+}
+maopao([23,334,54,3445,5645,24,5634,5656,23,65,43,554])
+
+// 深拷贝
+let cache = []
+function deepClone(source){
+  let dist
+  const index = cache.findIndex((item) => {
+    return item[0] === source
+  })
+  if(index>-1){
+    console.log('有缓存')
+    dist = cache[index][1]
+    return dist
+  }
+  if(source instanceof Object){
+    if(source instanceof Array){
+      dist = []
+    }else if(source instanceof RegExp){
+      dist = new RegExp(source.source, source.flags)
+    }else if(source instanceof Date){
+      dist = new Date(source)
+    }else if(source instanceof Function){
+      dist = function(){
+        return source.apply(this, arguments)
+      } 
+    }else{
+      dist = {}
+    }
+    cache.push([dist,source])
+    for(let i in source){
+      dist[i] = deepClone(source[i])
+    }
+    return dist
+  }else{
+    return source
+  }
+}
+
+function traversDom(root){
+  var stack = [root]
+  while(stack.length){
+    var current = stack.shift()
+    if(current){
+      parseInfo(current)
+    }
+    if(current.childNodes.length){
+      stack.push(root.childNodes)
+    }
+  }
+}
+
+// 前根序
+const traverseRoodQian = (bTree, fn)=>{
+  var current = bTree
+  var stack = []
+  while(stack.length>0||current){
+    if(current){
+      fn(current.value)
+      stack.push(current)
+      current = current.left
+    }else{
+      current = stack.pop()
+      current = current.right
+    }
+  }
+}
+
+const traverseRoodMiddle = (bTree, fn)=>{
+  var current = bTree
+  var stack = []
+  while(stack.length>0||current){
+    if(current){
+      // fn(current.value)
+      stack.push(current)
+      current = current.left
+    }else{
+      current = stack.pop()
+      fn(current.value)
+      current = current.right
+    }
+  }
+}
+
+const tree = {
+  value:1,
+  left:{value:2,left:{value:4,left:null,right:null}}
 }
