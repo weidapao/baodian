@@ -62,3 +62,33 @@ function bsearchWithout2(array, low, high, target){
     return mid
   }
 }
+
+function erfen(array, low, high, target){
+  if(low > high) return -1
+  var mid = Math.floor((low + high) / 2)
+  if(array[mid]<target){
+    return erfen(array, low, mid-1, target)
+  }
+  if(array[mid]>target){
+    return erfen(array, mid+1, high, target)
+  }
+  return mid
+}
+
+function erfen(array, low, high, target){
+  if(low > high) return -1
+  var i = low
+  var j = high
+  while(i<j){
+    var mid = Math.floor((i + j) / 2)
+    if(array[mid]<target){
+      i = mid+1
+    }
+    if(array[mid]>target){
+      j= mid-1
+    }
+    if(array[mid]===target){
+      return mid
+    }
+  }
+}
