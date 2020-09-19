@@ -34,15 +34,16 @@ function merge(left, right) {
 
 console.log(mergeSort([23,334,54,3445,5645,24,5634,5656,23,65,43,554]))
 
-function merger2(left, right) {
-  var i = 0;
-  var j = 0;
+function merge2(left, right) {
+  var i = 0
+  var j = 0
   var result = []
-  while(i < left.length&&j < right.length){
+  while (i < left.length&&j<right.length) {
     if(left[i]<=right[j]){
       result.push(left[i])
       i++
-    }else{
+    }
+    if(left[i]>right[j]){
       result.push(right[j])
       j++
     }
@@ -50,12 +51,14 @@ function merger2(left, right) {
   return result.concat(left.slice(i),right.slice(j))
 }
 
-function mergrSort2(arr){
-  if(arr.length<2){
-    return arr
+function mergeSort2(arr){
+  if(arr.length>1){
+    var mid = Math.floor(arr.length/2)
+    var left = arr.slice(0,mid)
+    var right = arr.slice(mid)
+    return merge2(mergeSort2(left),mergeSort2(right))
   }
-  var mid = Math.floor(arr.length/2)
-  return merger2(mergrSort2(arr.slice(0,mid)),mergrSort2(arr.slice(mid)))
+  return arr
 }
 
-console.log(mergrSort2([23,334,54,3445,5645,24,5634,5656,23,65,43,554]))
+console.log(mergeSort2([23,334,54,3445,5645,24,5634,5656,23,65,43,554]))

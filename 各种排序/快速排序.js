@@ -36,6 +36,7 @@ function partition(items, left, right) {
 
 function quickSort(items,left,right) {
   if(items.length>1){
+    console.log(left)
     var index = partition(items,left,right)
     if(left<index-1){
       quickSort(items,left,index-1)
@@ -50,10 +51,10 @@ function quickSort(items,left,right) {
 console.log(quickSort([23,334,54,3445,5645,24,5634,5656,23,65,43,554],0,11))
 
 function quick(arr,left,right){
-  var middleVal = arr[Math.floor((left + right) / 2)]
   var i = left
   var j = right
-  while(i<=j){
+  var middleVal = arr[Math.floor((left+right)/2)]
+  while (i<=j){
     while(arr[i]<middleVal){
       i++
     }
@@ -70,16 +71,24 @@ function quick(arr,left,right){
   }
   return i
 }
-function quickSort2(arr,left,right){
-  if(arr.length>1){
-    var index = quick(arr,left,right)
-    if(index-1>left){
-      quickSort2(arr,left,index-1)
+function quickSort2(arr,left,right) {
+  if (arr.length > 1) {
+    var index = quick(arr, left, right)
+    if (index - 1 > left) {
+      quickSort2(arr, left, index - 1)
     }
-    if(right>index){
-      quickSort2(arr,index,right)
+    if (right > index) {
+      quickSort2(arr, index, right)
     }
   }
   return arr
 }
-console.log(quickSort2([23,334,54,3445,5645,24,5634,5656,23,65,43,554],0,11),'xxx')
+
+var smallestK = function(arr, k) {
+  const result =  quickSort2(arr)
+  return result.slice(0,k)
+};
+
+console.log(quickSort2([1,2,3],0,2))
+
+// console.log(quickSort2([23,334,54,3445,5645,24,5634,5656,23,65,43,554]),'xxx')

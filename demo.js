@@ -276,3 +276,37 @@ const tree = {
   value:1,
   left:{value:2,left:{value:4,left:null,right:null}}
 }
+
+/**
+ * Definition for singly-linked list.
+ * function ListNode(val) {
+ *     this.val = val;
+ *     this.next = null;
+ * }
+ */
+/**
+ * @param {ListNode} head
+ * @return {ListNode}
+ */
+var insertionSortList = function(head) {
+    var stack = [head]
+    var current = head
+    while (current.next){
+      stack.push(current.next)
+      current = current.next
+      if(!current){
+        for(let i = 1; i <stack.length; i++){
+          let count = i
+          while(count>0){
+            if(stack[count].val<stack[count-1].val){
+              var temp = stack[count].val
+              stack[count].val = stack[count-1].val
+              stack[count-1].val = temp
+            }
+            count--
+          }
+        }
+      }
+    }
+    return head
+};
