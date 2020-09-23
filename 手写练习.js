@@ -188,28 +188,6 @@ Function.prototype.bind2 = function () {
   return resultFn
 }
 
-// 遍历DOM树并打印出DOM节点的tagName和className
-function traversDom(boxNode){
-  //创建一个队列，并把最外层放入队列
-  let queue = [boxNode]
-  // 遍历队列
-  while (queue.length){
-      // 获取队列第一个dom
-      let node = queue.shift()
-      // 打印dom信息
-      pointNodeInfo(node)
-      // 判断当前都没是否有子级，如果没有跳过 可能会有兄弟节点
-      if(!node.children.length){
-          continue
-      }
-      // 如果有遍历 子级节点 并插入到队列，继续循环
-      Array.from( node.children ).forEach( item =>{
-          queue.push(item)
-      })
-
-  }
-}
-
 function pointNodeInfo(node){
   console.log(node.tagName+"-"+node.className)
 }
@@ -228,3 +206,18 @@ function mysetInterval(fn,ms) {
   rec.current = exec()
   return rec
 }
+
+var number = 1;
+function fn() {
+  console.log(this.number);
+}
+let obj = {
+  number: 2,
+  show: function (fn) {
+    fn();
+    arguments[0]();
+  },
+};
+obj.show(fn);
+
+obj.show.call(obj,fn);

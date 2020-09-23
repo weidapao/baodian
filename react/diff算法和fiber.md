@@ -23,7 +23,7 @@
 - 将 O(n3) 复杂度的问题转换成 O(n)
 - 分层求异，对tree diff进行优化
 - 相同类生成相似树形结构，不同类生成不同树形结构，优化component diff
-- 设置唯一 key,优化element diff
+- 设置唯一 key,优化element diff,Key 应该具有稳定，可预测，以及列表内唯一的特质。不稳定的 key（比如通过 Math.random() 生成的）会导致许多组件实例和 DOM 节点被不必要地重新创建，这可能导致性能下降和子组件中的状态丢失。
 
 # fiber 架构
 

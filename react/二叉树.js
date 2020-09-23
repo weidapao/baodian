@@ -96,3 +96,71 @@ function traversalQian(tree, fn){
     traversalQian(tree.right,fn)
   }
 }
+
+//广度遍历html节点
+function breadthSearch(item, childProp='children'){
+  const nodeList=[item]
+  let index=0;
+  while (index<nodeList.length){
+      const node=nodeList[index++];
+      if(node[childProp]){
+          for(let k in node[childProp]){
+              nodeList.push(node[childProp][k]);
+          }
+      }
+  }
+  return nodeList;
+}
+
+// 遍历DOM树并打印出DOM节点的tagName和className
+function traversDom(boxNode){
+  //创建一个队列，并把最外层放入队列
+  let queue = [boxNode]
+  // 遍历队列
+  while (queue.length){
+      // 获取队列第一个dom
+      let node = queue.shift()
+      // 打印dom信息
+      pointNodeInfo(node)
+      // 判断当前都没是否有子级，如果没有跳过 可能会有兄弟节点
+      if(!node.children.length){
+          continue
+      }
+      // 如果有遍历 子级节点 并插入到队列，继续循环
+      Array.from( node.children ).forEach( item =>{
+          queue.push(item)
+      })
+
+  }
+}
+
+// 深度遍历
+function depthSearch(node,childProp='children'){
+  const nodeList=[]
+  const depthEach=function(item){
+      nodeList.push(item);
+      if(item[childProp]){
+          for(let k in item[childProp]){
+              depthEach(item[childProp][k]);
+          }
+      }
+  }
+  depthEach(node);
+  return nodeList;
+}
+
+function depthSearchWithout(node,childProp='children'){
+  var stack = [node];
+  var current = node
+  var result = []
+  while (stack.length > 0) {
+    var current = stack.pop()
+    result.push(current)
+    if (current[childProp]) {
+      for(var i=current[childProp].length-1;i>-1;i--){
+        stack.push(current[childProp][i])
+      }
+    }
+  }
+  return result
+}
