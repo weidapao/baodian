@@ -1,5 +1,5 @@
 TODO: 项目遇到的问题 rn fs找不到，paths不支持中文，安卓手机text显示不全问题
-TODO: node eventloop 前端做并发请求控制 事件委托 autocomplete
+TODO: node eventloop redux中间件原理
 
 
 >X-UA-Compatible overrides the Compatibility View Settings, so the page will render in standards mode regardless of the browser settings
