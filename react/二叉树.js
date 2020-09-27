@@ -75,15 +75,13 @@ const traverseRoodMiddle = (bTree, fn) => {
 // 不使用递归前根序
 const traverseRoodQian = (bTree, fn) =>{
   const stack = []
-  let current = bTree
-  while(stack.length>0 || current){
-    if(current){
-      fn(current.value)
-      stack.push(current)
-      current = current.left
-    }else{
-      current = stack.pop()
-      current = current.right
+  while(stack.length){
+    var current = stack.pop()
+    if(current.right){
+      stack.push(current.right)
+    }
+    if(current.left){
+      stack.push(current.left)
     }
   }
   
