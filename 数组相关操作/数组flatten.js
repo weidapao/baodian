@@ -37,3 +37,10 @@ function flatten(input) {
   // 反转恢复原数组的顺序
   return res.reverse();
 }
+
+
+const flatten = (arr)=>{
+  return arr.reduce((a,b)=>{
+    return a.concat(Array.isArray(b)?flatten(b):b)
+  },[])
+}

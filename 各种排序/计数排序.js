@@ -16,7 +16,7 @@ function countSort(arr){
         max = arr[i] 
     }
     if(arr[i] < min){
-        max = arr[i]
+        min = arr[i]
     }
   }
   var countArr = new Array(max-min+1).fill(0)

@@ -74,7 +74,7 @@ const traverseRoodMiddle = (bTree, fn) => {
 
 // 不使用递归前根序
 const traverseRoodQian = (bTree, fn) =>{
-  const stack = []
+  const stack = [bTree]
   while(stack.length){
     var current = stack.pop()
     if(current.right){
@@ -145,6 +145,18 @@ function depthSearch(node,childProp='children'){
   }
   depthEach(node);
   return nodeList;
+}
+
+function depthSearchWithout(node,childProp='children'){
+  var result = []
+  var queue = [node]
+  while (queue.length) {
+    var node = queue.shift()
+    result.push(node)
+    for(let k in node[childProp]){
+      queue.push(node[childProp][k])
+    }
+  }
 }
 
 function depthSearchWithout(node,childProp='children'){

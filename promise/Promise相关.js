@@ -33,12 +33,24 @@ Promise.all2 = (promises) => {
   })
 }
 
-// 实现Promise.race
-Promise.race2 = promises =>new Promise((resolve, reject)=>{
-  promises.forEach(promise=>{
-    promise.then(resolve, reject)
+// promise race
+Promise.race2 = (promises) => {
+  let isend = false
+  return new Promise((resolve, reject) => {
+    for (let i = 0; i < promises.length; i++) {
+      Promise.resolve(promises[i]).then(
+        (value) => {
+          !isend && resolve(value)
+          isend = true
+        },
+        (err) => {
+          !isend && reject(value)
+          isend = true
+        }
+      )
+    }
   })
-})
+}
 
 // 实现fetch超时
 Promise.race([new Promise(function(resolve, reject){
@@ -70,6 +82,13 @@ Promise.allsettled2 = (promiseList) => {
 }
 
 // Promise.allsettled2([s1(), s2(), s3()]).then((value) => console.log(value))
+
+const delay = (wait)=>new Promise(function(resolve, reject) {
+  setTimeout(()=>resolve(),wait)
+})
+
+delay(3000).then(()=>console.log(1111))
+
 
 Promise.resolve(1).then(value => console.log(value))
 setTimeout(()=>{console.log(2)},0)
