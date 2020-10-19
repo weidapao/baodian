@@ -159,15 +159,15 @@ function depthSearchWithout(node,childProp='children'){
   }
 }
 
-function depthSearchWithout(node,childProp='children'){
-  var stack = [node];
+function depthSearchWithout(node, childProp = 'children') {
+  var stack = [node]
   var current = node
   var result = []
   while (stack.length > 0) {
     var current = stack.pop()
     result.push(current)
     if (current[childProp]) {
-      for(var i=current[childProp].length-1;i>-1;i--){
+      for (var i = current[childProp].length - 1; i > -1; i--) {
         stack.push(current[childProp][i])
       }
     }

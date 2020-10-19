@@ -8,6 +8,7 @@
 // 简单实现useState，useEffect
 // 用数组，来解决 Hooks 的复用问题
 // useEffect会在组件渲染到屏幕之后执行,useLayoutEffect在所有的 DOM 变更之后同步调用 effect，在浏览器执行绘制之前同步更新，会阻塞
+// useRef传统用法获取组件实例对象或者是DOM对象，还可以“跨渲染周期”保存数据，而且对它修改也不会引起组件渲染
 let memoizedState = []; // hooks 存放在这个数组
 let cursor = 0; // 当前 memoizedState 下标
 

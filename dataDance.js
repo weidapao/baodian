@@ -49,16 +49,47 @@ let list = [1,2,3]
 list.__proto__ = arrProto
 list.push('4')
 
+// 前根序
+function qiangengxu(tree){
+  var stack = [tree]
+  while(stack.length){
+    var current = stack.pop()
+    console.log(current.val)
+    if(current.right){
+      stack.push(current.right)
+    }
+    if(current.left){
+      stack.push(current.left)
+    }
+  }
+}
+
 
 // 中根序不递归
 function travel(tree){
   var stack = []
   var current = tree
-  while(stack.length>0||current){
+  while(stack.length||current){
     if(current){
       stack.push(current)
       current = current.left
     }else{
+      current = stack.pop()
+      console.log(current)
+      current = current.right
+    }
+  }
+}
+
+
+function travel(tree) {
+  var stack = []
+  var current = tree
+  while (stack.length > 0 || current) {
+    if (current) {
+      stack.push(current)
+      current = current.left
+    } else {
       current = stack.pop()
       console.log(current)
       current = current.right
@@ -150,13 +181,13 @@ function compose() {
 }
 
 // 写
-function myInterval(fn,ms){
+function myInterval(fn, ms) {
   var timeId = null
-  const exec = function(){
-    return setTimeout(()=>{
+  const exec = function () {
+    return setTimeout(() => {
       fn.apply(null)
       timeId = exec()
-    },ms)
+    }, ms)
   }
   timeId = exec()
   return timeId
@@ -224,3 +255,5 @@ const combinationSum2 = (candidates, target) => {
   dfs(0, [], 0);
   return res;
 };
+
+// 广度优先

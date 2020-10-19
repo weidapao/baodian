@@ -1,12 +1,14 @@
-function debounce(fn, delay){
+function debounce(fn, delay) {
   let timerId = null
-  return function(){
-      const context = this
-      if(timerId){window.clearTimeout(timerId)}
-      timerId = setTimeout(()=>{
-          fn.apply(context, arguments)
-          timerId = null
-      },delay)
+  return function () {
+    const context = this
+    if (timerId) {
+      window.clearTimeout(timerId)
+    }
+    timerId = setTimeout(() => {
+      fn.apply(context, arguments)
+      timerId = null
+    }, delay)
   }
 }
 
