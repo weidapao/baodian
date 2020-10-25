@@ -12,8 +12,7 @@ Node.js 启动时
 ## timers
 用来存储setTimeout事件
 这个阶段执行 setTimeout 和 setInterval 的回调函数
-setTimeout(fn,1000)
-把fn放到timers的队列里面
+遇到代码setTimeout(fn,1000)，把fn放到timers的队列里面
 
 ## poll(轮询阶段)
 获取新的 I/O 事件
@@ -38,3 +37,18 @@ promise.then一般是用nextTick来实现
 
 ## 微任务microtask
 马上
+
+## 常见题目
+```
+setTimeOut(fn,0)
+setImmediate(fn2)
+```
+不确定谁先执行。
+原因：
+1.开启eventloop
+2.执行js代码
+开启eventloop的速度不确定，执行js的时候可能处于timers阶段，就先执行setTimeOut
+
+大部分时间处于poll阶段，poll阶段下一步到check阶段，setImmediate在check阶段执行，所以一般setImmediate优先级更高。
+process.nextTick不属于eventloop,当前阶段结束之后马上执行，微任务
+promise.then一般是用nextTick来实现
