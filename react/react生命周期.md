@@ -23,8 +23,8 @@
 - componentWillUnmount()
 
 ## 错误处理
-- static getDerivedStateFromError()
-- componentDidCatch()
+- static getDerivedStateFromError() 后代组件抛出错误后被调用，返回一个值更新state
+- componentDidCatch() 在后代组件抛出错误后被调用，执行副作用
 
 ![生命周期图](./lifecycle.png)
 
