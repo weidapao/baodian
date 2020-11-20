@@ -1,6 +1,6 @@
 function quick(arr,left,right){
- var middle = Math.floor((left+right)/2)
- var middleVal = arr[middle]
+  var middle = Math.floor((left+right)/2)
+  var middleVal = arr[middle]
   var i = left
   var j = right
   while(i<=j){
@@ -24,10 +24,10 @@ function quick(arr,left,right){
 function quickSort(arr,left,right){
   if(arr.length>1){
     var index = quick(arr,left,right)
-    if(index-1>left){
+    if(index - 1 > left){
       quickSort(arr,left,index-1)
     }
-    if(index<right){
+    if(right > index){
       quickSort(arr,index,right)
     }
   }
@@ -37,26 +37,26 @@ function quickSort(arr,left,right){
 // console.log(quickSort([23,334,54,3445,5645,24,5634,5656,23,65,43,554],0,11))
 
 function merge(arr1,arr2){
-  var i = 0
-  var j = 0
-  var result = []
-  while (i < arr1.length&&j < arr2.length){
-    if(arr1[i]>=arr2[j]){
-      result.push(arr2[j])
-      j++
-    }else{
-      result.push(arr1[i])
-      i++
-    }
-  }
-  return result.concat(arr1.slice(i),arr2.slice(j))
+ var i = 0;
+ var j = 0;
+ var result = []
+ while (i < arr1.length&&j < arr2.length){
+   if(arr1[i]>=arr2[j]){
+    result.push(arr2[j])
+    j++
+   }else{
+     result.push(arr1[i])
+     i++
+   }
+ }
+ return result.concat(arr1.slice(i),arr2.slice(j))
 }
 function mergeSort(arr){
   if(arr.length>1){
-    var middleIndex = Math.floor((arr.length)/2)
-    var left = arr.slice(0,middleIndex)
-    var right = arr.slice(middleIndex,arr.length)
-    return merge(mergeSort(left),mergeSort(right))
+    var middle = Math.floor(arr.length/2)
+    var arr1 = arr.slice(0,middle)
+    var arr2 = arr.slice(middle)
+    return merge(mergeSort(arr1),mergeSort(arr2))
   }else{
     return arr
   }
@@ -64,10 +64,12 @@ function mergeSort(arr){
 
 console.log(mergeSort([23,334,54,3445,5645,24,5634,5656,23,65,43,554],0,11))
 
-function flatten(arr,deep){
-  return deep>0?arr.reduce((a,b)=>{
-    return a.concat(Array.isArray(b) ? flatten(b,deep-1) :b)
-  },[]):arr.slice()
+function flatten(arr, deep) {
+  return deep > 0
+    ? arr.reduce((a, b) => {
+        return a.concat(Array.isArray(b) ? flatten(b, deep - 1) : b)
+      }, [])
+    : arr
 }
 
 function qiangeng(tree){
@@ -135,13 +137,14 @@ function breadthSearch(item, childProp='children'){
 // generate执行器
 function run(gen){
   let g = gen()
-  function next(data){
-    let result = g.next(data)
+  function next(data) {
+    var result = g.next(data)
     if(result.done){
       return result.value
-    }else{
-      result.value.then(data =>next(data))
     }
+    result.value.then(val=>{
+      return next(val)
+    })
   }
   next()
 }
@@ -178,12 +181,12 @@ function throttle(fn,ms){
 }
 
 // 柯里化
-function currify(fn,params=[]){
-  return function(...args){
-    if(fn.length===params.length+args.length){
-      return fn(...params,...args)
-    }else{
-      return currify(fn,[...params,...args])
+function currify(fn, params = []) {
+  return function (...args) {
+    if (fn.length === params.length + args.length) {
+      return fn(...params, ...args)
+    } else {
+      return currify(fn, [...args, ...params])
     }
   }
 }
@@ -191,10 +194,10 @@ function currify(fn,params=[]){
 // 实现bind
 Function.prototype.bind2 = function(){
   var fn = this
-  var context = arguments[0]
-  var args = Array.prototype.slice.call(arguments,1)
+  var context = Array.prototype.shift.call(arguments)
+  var args = Array.prototype.slice.call(arguments)
   var resultFn = function(){
-    fn.apply(this instanceof resultFn?this:context, args.concat(Array.prototype.slice.call(arguments)))
+    return fn.apply(this instanceof resultFn?this:context, args.concat(Array.prototype.slice.call(arguments)))
   }
   resultFn.prototype = fn.prototype
   return resultFn
@@ -211,4 +214,23 @@ function myInterval(fn, ms) {
   }
   timer = exec()
   return timer
+}
+
+function sendRequest(urls, limit , callback) {
+  const finished = 0
+  function req(){
+    if(urls.length){
+      var url = urls.shift();
+      fetch(url).then(val=>{
+        finished++
+        req()
+      }).catch(e=>{throw new Error(e)})
+    }
+    if(finished>=urls.length){
+      callback()
+    }
+  }
+  for(let i=0;i<limit;i++) {
+    req()
+  }
 }
