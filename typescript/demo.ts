@@ -148,10 +148,10 @@ interface Product {
 class ProductService {
   getProducts(description: string): Product[]
   getProducts(id: number): Product
-  getProducts(product: string | number): Product[] | Product {
-    if (typeof product === 'number') {
+  getProducts(param:string|number):Product[]|Product{
+    if (typeof param === 'number') {
       return { id: 11, description: '33' }
-    } else if (typeof product === 'string') {
+    } else if (typeof param === 'string') {
       return [{ id: 11, description: '33' }]
     } else {
       return { id: -1, description: 'Error: getProducts() accept only number or string as args' }
@@ -406,6 +406,18 @@ type ReturnPromise<T> = T extends (...args: infer A) => infer R ? (...args: A) =
 type Promisify<T> = {
   [P in keyof T]:ReturnPromise<T[P]>
 }
+interface Yuan<T>{
+  a:string
+  b:number
+  c<T>(a:T):T
+}
+
+const haha:Promisify<SyncService> = {
+  baseUrl:'11',
+  getA(){
+    return Promise.resolve('3434')
+  }
+}
 
 class AsyncService implements Promisify<SyncService> {
   baseUrl: string
@@ -415,8 +427,151 @@ class AsyncService implements Promisify<SyncService> {
 }
 
 
+function logName<T extends {name:string}>(data: T): void {
+	console.log(data.name);
+}
+
+logName({ name: 'zhangsan' });
 
 const has = (value: any): value is boolean => true
 console.log(11,has(0))
 console.log(22,has(true))
 console.log(33,has(false))
+
+
+export function isFunction(obj: any): obj is Function {
+  return typeof obj === 'function';
+}
+
+interface Length {
+  length: number
+}
+function identity<T extends Length>(arg: T): T {
+  console.log(arg.length) // 可以获取length属性 return arg;
+  return arg
+}
+
+type K3 = keyof { [x: string]: any }
+
+export default useLabel
+
+function getProperty<T, K extends keyof T>(obj: T, k: K): T[K] {
+  return obj[k]
+}
+
+var a = { a: 1, b: 2 }
+getProperty(a, 'a')
+
+interface Dictionary<T = any> {
+  [key: string]: T
+}
+type StrDict = Dictionary<string>
+type DictMember<T> = T extends Dictionary<infer V> ? V : never
+type StrDictMember = DictMember<StrDict> // string
+
+// never 类型是那些总 是会抛出异常或根本就不会有返回值的函数表达式或箭头函数表达式的返回值类型
+
+//获取 Promise 对象的返回 值类型
+
+async function stringPromise() {
+  return 'Hello, Semlinker!'
+}
+interface Person {
+  name: string
+  age: number
+}
+async function personPromise() {
+  return { name: 'Semlinker', age: 30 } as Person
+}
+type PromiseType<T> = (args: any[]) => Promise<T>
+type UnPromisify<T> = T extends PromiseType<infer U> ? U : never
+type extractStringPromise = UnPromisify<typeof stringPromise> // string 
+type extractPersonPromise = UnPromisify<typeof personPromise>; // Person
+
+type A = {
+  a:string;
+  b:number;
+}
+
+type Testtype<T> = T extends A?A:T
+
+type CurrentAuthorityType = number;
+
+
+// 构造签名
+interface Point {
+  x: number
+  y: number
+}
+interface PointConstructor {
+  new (x: number, y: number): Point
+}
+
+function newPoint(pointConstructor: PointConstructor, x: number, y: number): Point {
+  return new pointConstructor(x, y)
+}
+class FirstClass {
+  id: number | undefined;
+}
+class SecondClass {
+  name: string | undefined;
+}
+class GenericCreator<T> {
+  create(c:{new(a:number):T},b:number): T {
+    return new c(b);
+  }
+}
+const creator1 = new GenericCreator<FirstClass>();
+
+ 
+const firstClass: FirstClass = creator1.create(FirstClass,24);
+// const creator2 = new GenericCreator<SecondClass>(); const secondClass: SecondClass = creator2.create();
+
+interface Yuan{
+  a:string
+  b:number
+  c(a:number):string
+}
+
+type BianPromise<T> = T extends (...args: infer A) => infer R ? (...args: A) => Promise<R> : T
+type PromiseYuan<T> = {
+  [P in keyof T]:BianPromise<T[P]>
+}
+
+const haha:PromiseYuan<Yuan> = {
+  a:'11',
+  b:32,
+  c(b){
+    return Promise.resolve('11')
+  }
+}
+
+// !非空断言操作符
+
+function myFunc(maybeString: string | undefined | null) {
+  // Type 'string | null | undefined' is not assignable to type 'string'. // Type 'undefined' is not assignable to type 'string'.
+  const onlyString: string = maybeString; // Error
+  const ignoreUndefinedAndNull: string = maybeString!; // Ok
+}
+
+// ?. 代替 &&
+ var val = a === null || a === void 0 ? void 0 : a.b;
+
+// ??运算符
+const foo = null ?? 'default string'; console.log(foo); // 输出:"default string"
+const baz = 0 ?? 42; console.log(baz); // 输出:0
+
+interface Y {
+  c: number;
+  e: string
+}
+ 
+interface X {
+  c: string;
+  d: string;
+}
+
+type c = Y&X
+
+let c:c;
+c={e:'23',d:'233',c:'dsds' as never}
