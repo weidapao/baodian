@@ -205,14 +205,14 @@ Function.prototype.bind2 = function(){
 
 // setTimeout模拟setInterval
 function myInterval(fn, ms) {
-  var timer = null
+  var timer = {current:null}
   var exec = function(){
     return setTimeout(()=>{
       fn()
-      timer = exec()
+      timer.current = exec()
     },ms)
   }
-  timer = exec()
+  exec()
   return timer
 }
 

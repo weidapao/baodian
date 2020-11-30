@@ -349,6 +349,10 @@ type Readonly1<T> = {
   readonly [P in keyof T]: T[P]
 }
 
+type Readonly2<T> = {
+  [P in keyof T]:T[P]
+}
+
 // 典型例子：过滤函数
 interface Person55 {
   name: string
@@ -399,7 +403,6 @@ interface SyncService {
 }
 
 type aa = keyof SyncService
-
 
 type ReturnPromise<T> = T extends (...args: infer A) => infer R ? (...args: A) => Promise<R> : T
 
@@ -575,3 +578,5 @@ type c = Y&X
 
 let c:c;
 c={e:'23',d:'233',c:'dsds' as never}
+
+type T2 = Exclude<string | number | (() => void), Function>; // string | number
