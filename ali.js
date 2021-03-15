@@ -186,7 +186,7 @@ function currify(fn, params = []) {
     if (fn.length === params.length + args.length) {
       return fn(...params, ...args)
     } else {
-      return currify(fn, [...args, ...params])
+      return currify(fn, [...params,...args])
     }
   }
 }
